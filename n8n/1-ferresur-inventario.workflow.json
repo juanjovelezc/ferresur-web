@@ -1,0 +1,74 @@
+{
+  "name": "Ferresur · Inventario (GET)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "ferresur-inventario",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "webhook-inventario",
+      "name": "Webhook Inventario",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "ferresur-inventario"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1lLvY251Cfi5-RDebdaVjS4JK56II0oYM",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "id": "descargar-csv",
+      "name": "Descargar CSV (Google Drive)",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [470, 300],
+      "notes": "Descarga INVENTARIO2026.csv. Requiere una credencial 'Google Drive OAuth2' (la misma cuenta de Google sirve). El file id ya está puesto."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Lee el CSV (export contable separado por ';') y lo convierte en\n// una lista de productos. Misma lógica que el catálogo que ya funciona.\nconst buffer = await this.helpers.getBinaryDataBuffer(0, 'data');\nconst text = buffer.toString('utf8');\n\nfunction round100(n){ return Math.round(n/100)*100; }\nfunction cleanPrice(raw){\n  if(!raw) return null;\n  let s = String(raw).replace(/\\s/g,'').replace(/\\$/g,'');\n  if(s==='' || s==='-') return null;\n  const intDigits = ((s.split(',')[0]).match(/\\d+/g) || []).join('');\n  if(!intDigits) return null;\n  const n = parseInt(intDigits, 10);\n  if(!n) return null;\n  return round100(n);\n}\nfunction cleanGroup(g){\n  return (g||'').replace(/^\\s*\\d+\\s*-\\s*/,'').trim().toUpperCase() || 'SIN GRUPO';\n}\n\nconst parts = text.split('P-Producto;');\nconst productos = [];\nlet idc = 0;\nfor (let i = 0; i < parts.length; i++) {\n  const chunk = parts[i];\n  if (!chunk || chunk.indexOf(';') === -1) continue;\n  const f = chunk.split(';');\n  const grpRaw = (f[0] || '').trim();\n  if (!/^\\d+\\s*-/.test(grpRaw)) continue;   // descarta el encabezado\n  const nombre = (f[2] || '').trim();\n  if (!nombre) continue;\n  const precio = cleanPrice(f[34]);          // campo PRECIO DE VENTA\n  productos.push({\n    id: (f[1] || idc).toString().trim(),\n    nombre,\n    precio,\n    grupo: cleanGroup(grpRaw)\n  });\n  idc++;\n}\n\nreturn [{ json: { productos, total: productos.length } }];"
+      },
+      "id": "parsear",
+      "name": "Parsear inventario",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [700, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              { "name": "Access-Control-Allow-Origin", "value": "*" },
+              { "name": "Cache-Control", "value": "public, max-age=300" }
+            ]
+          }
+        }
+      },
+      "id": "responder",
+      "name": "Responder inventario",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [930, 300]
+    }
+  ],
+  "connections": {
+    "Webhook Inventario": { "main": [[{ "node": "Descargar CSV (Google Drive)", "type": "main", "index": 0 }]] },
+    "Descargar CSV (Google Drive)": { "main": [[{ "node": "Parsear inventario", "type": "main", "index": 0 }]] },
+    "Parsear inventario": { "main": [[{ "node": "Responder inventario", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {}
+}

@@ -1,0 +1,15 @@
+{
+  "name": "ferresur-web",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Sitio web de Ferresur La 48 — ferretería en Caldas, Antioquia. Vite + JS vanilla, full responsive, con cotizaciones por WhatsApp vía n8n.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.4.0"
+  }
+}

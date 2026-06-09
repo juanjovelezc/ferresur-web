@@ -1,0 +1,79 @@
+{
+  "name": "Ferresur · Cotización -> WhatsApp (POST)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ferresur-cotizacion",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "webhook-cotizacion",
+      "name": "Webhook Cotización",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "ferresur-cotizacion"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Arma el texto del mensaje de WhatsApp a partir de la cotización.\nconst b = $json.body || $json;\nconst cliente = b.cliente || {};\nconst items = Array.isArray(b.items) ? b.items : [];\nconst fmt = (n) => '$ ' + (Number(n) || 0).toLocaleString('es-CO');\n\nconst lineas = items\n  .map((it) => `\\u2022 ${it.nombre} x${it.cantidad} \\u2014 ${fmt(it.subtotal)}`)\n  .join('\\n');\n\nconst texto =\n  `*Nueva cotizaci\\u00f3n \\u2014 Ferresur La 48*\\n\\n` +\n  `*Cliente:* ${cliente.nombre || '-'}\\n` +\n  `*Tel\\u00e9fono:* ${cliente.telefono || '-'}\\n` +\n  (cliente.nota ? `*Nota:* ${cliente.nota}\\n` : '') +\n  `\\n${lineas}\\n\\n` +\n  `*TOTAL: ${fmt(b.total)}*`;\n\nreturn [{ json: { texto, total: b.total, cliente } }];"
+      },
+      "id": "formatear",
+      "name": "Formatear mensaje",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [470, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v20.0/PHONE_NUMBER_ID/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer TU_TOKEN_PERMANENTE_DE_WHATSAPP" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"573145851371\",\n  \"type\": \"text\",\n  \"text\": { \"body\": {{ JSON.stringify($json.texto) }} }\n}",
+        "options": {}
+      },
+      "id": "enviar-whatsapp",
+      "name": "Enviar a WhatsApp (Cloud API)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [700, 300],
+      "notes": "Reemplaza PHONE_NUMBER_ID y el token por los de tu app de Meta (WhatsApp Cloud API). NOTA: enviar texto libre al dueño requiere que el dueño haya escrito al número en las últimas 24h; si no, usa una PLANTILLA aprobada (ver README)."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={ \"ok\": true, \"mensaje\": \"Cotización recibida\" }",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              { "name": "Access-Control-Allow-Origin", "value": "*" }
+            ]
+          }
+        }
+      },
+      "id": "responder",
+      "name": "Responder OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [940, 300]
+    }
+  ],
+  "connections": {
+    "Webhook Cotización": { "main": [[{ "node": "Formatear mensaje", "type": "main", "index": 0 }]] },
+    "Formatear mensaje": { "main": [[{ "node": "Enviar a WhatsApp (Cloud API)", "type": "main", "index": 0 }]] },
+    "Enviar a WhatsApp (Cloud API)": { "main": [[{ "node": "Responder OK", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {}
+}
