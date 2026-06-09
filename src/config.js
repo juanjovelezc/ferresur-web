@@ -22,7 +22,7 @@ export const BUSINESS = {
 export const HORARIO = [
   { dia: 'Lunes a Viernes', horas: '7:30 a.m. – 6:30 p.m.', abierto: true },
   { dia: 'Sábados', horas: '7:30 a.m. – 5:00 p.m.', abierto: true },
-  { dia: 'Domingos y festivos', horas: 'Cerrado', abierto: false }
+  { dia: 'Domingos y festivos', horas: '7:30 a.m. – 12:00 m.', abierto: true }
 ];
 
 // Endpoints de n8n.

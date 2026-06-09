@@ -25,6 +25,9 @@ export function Quote() {
           Busca los productos, agrégalos con “+”, ajusta cantidades y envíanos el detalle por WhatsApp.
           Te respondemos con disponibilidad y forma de entrega.
         </p>
+        <p class="quote__disclaimer">
+          ⚠️ Los precios son de referencia y están sujetos a cambios sin previo aviso. El valor final se confirma por WhatsApp.
+        </p>
       </header>
 
       <div class="quote">
