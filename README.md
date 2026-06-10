@@ -20,9 +20,9 @@ npm run preview        # previsualiza el build
 ## Variables de entorno (.env)
 | Variable | Para qué sirve |
 |---|---|
-| `VITE_N8N_INVENTARIO_URL` | Webhook GET de n8n que **devuelve** el inventario en JSON. |
-| `VITE_N8N_COTIZACION_URL` | Webhook POST de n8n que **recibe** la cotización y la manda a WhatsApp. |
-| `VITE_WHATSAPP_NUMERO` | Número de Ferresur (`573145851371`). Se usa como respaldo `wa.me` si el webhook falla. |
+| `VITE_WHATSAPP_NUMERO` | Número de Ferresur (`573145851371`). Se usa para abrir WhatsApp con la cotización precargada. |
+
+> El inventario ya **no** depende de n8n: es un JSON estático (`src/data/inventario.json`). Puedes ignorar/borrar `VITE_N8N_*`.
 
 ## Estructura
 ```
@@ -40,26 +40,29 @@ src/
 n8n/                   Workflows importables (inventario y cotización)
 ```
 
+## Inventario (JSON estático, sin costo)
+El catálogo se sirve desde `src/data/inventario.json`. Para generarlo o actualizarlo:
+
+```bash
+# Opción A (sostenible): desde el CSV exportado de tu software contable.
+#   Coloca INVENTARIO2026.csv en la raíz del proyecto y corre:
+npm run inventario
+
+# Opción B (otra ruta de CSV):
+node scripts/generar-inventario.mjs ruta/a/tu.csv
+
+# Opción C (solo la primera vez, si aún tienes el webhook n8n activo):
+node scripts/generar-inventario.mjs https://TU-N8N/webhook/ferresur-inventario
+```
+
+El script toma solo `nombre`, `precio` y `grupo` (no expone costos ni márgenes), escribe el JSON y luego haces `git push` para publicarlo. Los productos sin precio aparecen como **"Consultar"**.
+
 ## Cómo funcionan las cotizaciones
-1. La web hace `GET` a `VITE_N8N_INVENTARIO_URL` → n8n lee tu Google Sheet/Drive y responde el inventario.
-2. El cliente busca, filtra por grupo y agrega productos al carrito.
-3. Llena nombre + teléfono y pulsa **Enviar cotización por WhatsApp**.
-4. La web hace `POST` a `VITE_N8N_COTIZACION_URL` con el detalle → n8n arma el mensaje y lo envía al WhatsApp de Ferresur (`+57 314 585 1371`).
-5. Si el webhook no responde, la web abre automáticamente `wa.me` con la cotización precargada (respaldo).
+1. El cliente busca, filtra por grupo y agrega productos al carrito (datos del JSON local).
+2. Llena nombre + teléfono y pulsa **Enviar cotización por WhatsApp**.
+3. Se abre WhatsApp con la cotización precargada hacia el número de Ferresur (`+57 314 585 1371`); el cliente solo pulsa enviar.
 
-## Configurar n8n
-Importa los dos workflows de la carpeta `n8n/` en tu instancia.
-
-**1 · Inventario** (`1-ferresur-inventario.workflow.json`)
-- Conecta tus credenciales de Google Sheets y pon el ID de tu hoja en el nodo *Leer inventario*. Columnas sugeridas: `nombre`, `precio`, `grupo`.
-- Si prefieres usar el CSV de Drive (INVENTARIO2026.csv), reemplaza ese nodo por *Google Drive → Download* + *Extract from File*.
-- Copia la **Production URL** del webhook y pégala en `VITE_N8N_INVENTARIO_URL`.
-
-**2 · Cotización** (`2-ferresur-cotizacion.workflow.json`)
-- En el nodo *Enviar a WhatsApp* reemplaza `PHONE_NUMBER_ID` y `TU_TOKEN_PERMANENTE_DE_WHATSAPP` por los de tu app de Meta (WhatsApp Cloud API).
-- Copia la **Production URL** del webhook y pégala en `VITE_N8N_COTIZACION_URL`.
-
-> **Importante (WhatsApp Cloud API):** enviar un texto libre al número del dueño solo funciona dentro de la ventana de 24h desde que ese número escribió a la línea de negocio. Para notificaciones siempre fiables, crea y aprueba una **plantilla** (template) en Meta y cambia el `type` del mensaje a `template`. Para pruebas rápidas, escribe primero desde el WhatsApp de Ferresur a la línea de la API.
+Sin servidores ni servicios externos: todo es estático + `wa.me`.
 
 ## Despliegue
 `npm run build` genera `/dist`. Súbelo a Netlify, Vercel, Cloudflare Pages o cualquier hosting estático. Define las variables `VITE_*` en el panel del hosting antes de construir.

@@ -14,6 +14,9 @@ let GROUPS = [];
 let activeGroup = 'TODOS';
 let term = '';
 
+// Máximo de filas que se pintan a la vez (rendimiento con miles de productos).
+const MAX_VISIBLE = 200;
+
 export function Quote() {
   return `
   <section class="section section--alt" id="cotizaciones">
@@ -99,16 +102,22 @@ function visibleProducts() {
 function renderList() {
   const el = document.getElementById('qList');
   if (!el) return;
-  const items = visibleProducts();
-  if (!items.length) {
+  const all = visibleProducts();
+  if (!all.length) {
     el.innerHTML = `<div class="quote__status">Sin coincidencias para tu búsqueda.</div>`;
     return;
   }
+  // Solo se pintan las primeras MAX_VISIBLE filas → fluido con miles de productos.
+  const items = all.slice(0, MAX_VISIBLE);
+  const note =
+    all.length > MAX_VISIBLE
+      ? `<div class="quote__note">Mostrando ${items.length} de ${all.length.toLocaleString('es-CO')} productos. Afina con el buscador o elige una categoría.</div>`
+      : '';
   // Agrupar por grupo para encabezados.
   const byGroup = {};
   items.forEach((p) => (byGroup[p.group] = byGroup[p.group] || []).push(p));
 
-  el.innerHTML = Object.keys(byGroup)
+  el.innerHTML = note + Object.keys(byGroup)
     .sort((a, b) => a.localeCompare(b, 'es'))
     .map((g) => {
       const rows = byGroup[g]
@@ -240,10 +249,12 @@ export async function initQuote() {
     renderList();
   });
 
-  // Búsqueda.
+  // Búsqueda con debounce (no re-renderiza en cada tecla).
+  let searchTimer;
   document.getElementById('qSearch')?.addEventListener('input', (e) => {
     term = e.target.value;
-    renderList();
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(renderList, 180);
   });
 
   // Eventos del carrito.
@@ -264,6 +275,19 @@ export async function initQuote() {
   // Carga del inventario.
   try {
     PRODUCTS = await getInventario();
+    if (!PRODUCTS.length) {
+      const el = document.getElementById('qList');
+      if (el) {
+        el.innerHTML = `
+          <div class="quote__status">
+            <p>El catálogo en línea está en preparación.</p>
+            <p>Escríbenos y te cotizamos de inmediato:</p>
+            <a class="btn btn--primary" target="_blank" rel="noopener"
+               href="${waLink('Hola Ferresur La 48, quiero una cotización.')}">Cotizar por WhatsApp</a>
+          </div>`;
+      }
+      return;
+    }
     GROUPS = [...new Set(PRODUCTS.map((p) => p.group))].sort((a, b) =>
       a.localeCompare(b, 'es')
     );
