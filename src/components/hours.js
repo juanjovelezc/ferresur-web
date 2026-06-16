@@ -8,9 +8,8 @@ function estaAbiertoAhora() {
   const co = new Date(ahora.toLocaleString('en-US', { timeZone: 'America/Bogota' }));
   const dia = co.getDay(); // 0 dom ... 6 sab
   const min = co.getHours() * 60 + co.getMinutes();
-  if (dia === 0) return min >= 450 && min <= 720; // dom 7:30–12:00
-  if (dia === 6) return min >= 450 && min <= 1020; // sáb 7:30–17:00
-  return min >= 450 && min <= 1110; // L-V 7:30–18:30
+  if (dia === 0) return min >= 420 && min <= 750; // dom 7:00–12:30
+  return min >= 420 && min <= 1140; // L–S 7:00–19:00
 }
 
 export function Hours() {

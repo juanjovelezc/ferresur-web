@@ -7,22 +7,21 @@ export const BUSINESS = {
   descripcionCorta:
     'Ferretería de barrio en Caldas, Antioquia. Herramientas, materiales de construcción, pinturas, eléctricos y plomería — con atención de verdad y domicilio en la zona.',
   ciudad: 'Caldas, Antioquia',
-  direccion: 'Carrera 48, Caldas (Antioquia)',
+  direccion: 'Cra. 48 # 131 SUR-74, Caldas, Antioquia',
   telefono: '+57 314 585 1371',
   whatsapp: import.meta.env.VITE_WHATSAPP_NUMERO || '573145851371',
   instagram: 'ferresurcaldas',
   instagramUrl: 'https://instagram.com/ferresurcaldas',
   email: 'ferresurla48@gmail.com',
-  // Coordenadas aproximadas de Caldas, Antioquia (ajústalas a la ubicación exacta).
+  // Ubicación exacta tomada de Google Business (Plus Code 39R8+66).
   mapaEmbed:
-    'https://www.google.com/maps?q=Carrera+48+Caldas+Antioquia&output=embed',
-  mapaLink: 'https://www.google.com/maps/search/?api=1&query=Carrera+48+Caldas+Antioquia'
+    'https://www.google.com/maps?q=6.0905992,-75.6344114&z=17&output=embed',
+  mapaLink: 'https://www.google.com/maps/place/Ferresur+La+48/@6.0905992,-75.6344114,17z'
 };
 
 export const HORARIO = [
-  { dia: 'Lunes a Viernes', horas: '7:30 a.m. – 6:30 p.m.', abierto: true },
-  { dia: 'Sábados', horas: '7:30 a.m. – 5:00 p.m.', abierto: true },
-  { dia: 'Domingos y festivos', horas: '7:30 a.m. – 12:00 m.', abierto: true }
+  { dia: 'Lunes a Sábado', horas: '7:00 a.m. – 7:00 p.m.', abierto: true },
+  { dia: 'Domingos', horas: '7:00 a.m. – 12:30 p.m.', abierto: true }
 ];
 
 // Endpoints de n8n.

@@ -20,13 +20,8 @@ export function Hero() {
         </ul>
       </div>
 
-      <div class="hero__panel" aria-hidden="true">
-        <div class="hero__tile">🔨</div>
-        <div class="hero__tile">🧱</div>
-        <div class="hero__tile">🎨</div>
-        <div class="hero__tile">💡</div>
-        <div class="hero__tile">🚰</div>
-        <div class="hero__tile hero__tile--brand">La&nbsp;48</div>
+      <div class="hero__media">
+        <img src="/img/local-1.jpg" alt="Local de Ferresur La 48 en la Carrera 48, Caldas" />
       </div>
     </div>
   </section>`;

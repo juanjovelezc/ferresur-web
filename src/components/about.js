@@ -22,6 +22,9 @@ export function About() {
           Lo que nos diferencia es simple: respondemos, asesoramos de verdad y entregamos rápido.
         </p>
       </header>
+      <div class="about__photo">
+        <img src="/img/local-2.jpg" alt="Interior de Ferresur La 48: pinturas, herramientas y materiales" loading="lazy" />
+      </div>
       <div class="values">${cards}</div>
     </div>
   </section>`;

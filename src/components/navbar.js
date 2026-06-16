@@ -16,6 +16,7 @@ export function Navbar() {
       <nav class="nav__links" id="navLinks">
         <a href="#nosotros">Quiénes somos</a>
         <a href="#servicios">Servicios</a>
+        <a href="#destacados">Productos</a>
         <a href="#ubicacion">Ubicación</a>
         <a href="#horario">Horario</a>
         <a href="#contacto">Contacto</a>

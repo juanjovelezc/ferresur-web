@@ -12,6 +12,7 @@ export function Footer() {
       <nav class="footer__links">
         <a href="#nosotros">Quiénes somos</a>
         <a href="#servicios">Servicios</a>
+        <a href="#destacados">Productos</a>
         <a href="#ubicacion">Ubicación</a>
         <a href="#horario">Horario</a>
         <a href="#cotizaciones">Cotizaciones</a>
