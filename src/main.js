@@ -1,5 +1,7 @@
 import './style.css';
 
+import { inject } from '@vercel/analytics';
+
 import { Navbar, initNavbar } from './components/navbar.js';
 import { Hero } from './components/hero.js';
 import { About } from './components/about.js';
@@ -10,6 +12,8 @@ import { Hours } from './components/hours.js';
 import { Quote, initQuote } from './components/quote.js';
 import { Contact } from './components/contact.js';
 import { Footer } from './components/footer.js';
+
+inject();
 
 const app = document.getElementById('app');
 
