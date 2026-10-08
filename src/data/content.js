@@ -3,32 +3,32 @@
 
 export const SERVICIOS = [
   {
-    icono: '🔨',
+    icono: 'tool',
     titulo: 'Herramientas',
     texto: 'Manuales y eléctricas: martillos, taladros, pulidoras, llaves, brocas y más. Marcas que aguantan trabajo de verdad.'
   },
   {
-    icono: '🧱',
+    icono: 'brick-wall',
     titulo: 'Materiales de construcción',
     texto: 'Cemento, arena, varilla, bloque, ladrillo y todo lo de obra negra. Cantidades para el hogar o para el contratista.'
   },
   {
-    icono: '🎨',
+    icono: 'paint-roller',
     titulo: 'Pinturas y acabados',
     texto: 'Vinilos, esmaltes, estucos, brochas, rodillos y lijas. Te asesoramos con el rendimiento y el color.'
   },
   {
-    icono: '💡',
+    icono: 'zap',
     titulo: 'Material eléctrico',
     texto: 'Cable, tomas, interruptores, bombillos LED, tubería conduit y tableros. Lo justo para tu instalación.'
   },
   {
-    icono: '🚰',
+    icono: 'droplet',
     titulo: 'Plomería',
     texto: 'Tubería y accesorios PVC, llaves, sifones, registros y todo para agua y desagüe.'
   },
   {
-    icono: '🛵',
+    icono: 'truck',
     titulo: 'Domicilios en la zona',
     texto: 'Llevamos tu pedido en Caldas y alrededores. Cotiza por la web y coordinamos la entrega por WhatsApp.'
   }

@@ -12,6 +12,7 @@ import { Hours } from './components/hours.js';
 import { Quote, initQuote } from './components/quote.js';
 import { Contact } from './components/contact.js';
 import { Footer } from './components/footer.js';
+import { initReveal } from './utils/reveal.js';
 
 inject();
 
@@ -33,3 +34,4 @@ app.innerHTML = [
 // Inicializar comportamiento de cada módulo.
 initNavbar();
 initQuote();
+initReveal();

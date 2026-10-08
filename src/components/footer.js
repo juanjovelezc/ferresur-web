@@ -1,4 +1,5 @@
 import { BUSINESS } from '../config.js';
+import { icon } from '../utils/icons.js';
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -25,5 +26,5 @@ export function Footer() {
   </footer>
 
   <a class="wa-float" href="https://wa.me/${BUSINESS.whatsapp.replace(/\D/g, '')}"
-     target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">💬</a>`;
+     target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">${icon('whatsapp')}</a>`;
 }

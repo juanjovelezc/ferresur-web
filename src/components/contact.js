@@ -1,6 +1,7 @@
 import { BUSINESS, waLink } from '../config.js';
 import { FAQ } from '../data/content.js';
 import { esc } from '../utils/format.js';
+import { icon } from '../utils/icons.js';
 
 export function Contact() {
   const faqs = FAQ.map(
@@ -22,18 +23,18 @@ export function Contact() {
 
       <div class="contact">
         <div class="contact__cards">
-          <a class="contact__card" href="${waLink('Hola Ferresur La 48 👋')}" target="_blank" rel="noopener">
-            <span class="contact__ic">💬</span>
+          <a class="contact__card" href="${waLink('Hola Ferresur La 48')}" target="_blank" rel="noopener">
+            <span class="contact__ic">${icon('whatsapp')}</span>
             <strong>WhatsApp</strong>
             <span>${BUSINESS.telefono}</span>
           </a>
           <a class="contact__card" href="${BUSINESS.instagramUrl}" target="_blank" rel="noopener">
-            <span class="contact__ic">📷</span>
+            <span class="contact__ic">${icon('camera')}</span>
             <strong>Instagram</strong>
             <span>@${BUSINESS.instagram}</span>
           </a>
           <a class="contact__card" href="${BUSINESS.mapaLink}" target="_blank" rel="noopener">
-            <span class="contact__ic">📍</span>
+            <span class="contact__ic">${icon('map-pin')}</span>
             <strong>Local</strong>
             <span>${BUSINESS.direccion}</span>
           </a>

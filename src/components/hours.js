@@ -2,7 +2,7 @@ import { HORARIO } from '../config.js';
 import { esc } from '../utils/format.js';
 
 // Devuelve true si el negocio está abierto ahora (hora de Colombia, UTC-5).
-function estaAbiertoAhora() {
+export function estaAbiertoAhora() {
   const ahora = new Date();
   // Convertir a hora de Colombia sin depender de la zona del navegador.
   const co = new Date(ahora.toLocaleString('en-US', { timeZone: 'America/Bogota' }));

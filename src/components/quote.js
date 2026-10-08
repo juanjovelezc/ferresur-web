@@ -29,7 +29,7 @@ export function Quote() {
           Te respondemos con disponibilidad y forma de entrega.
         </p>
         <p class="quote__disclaimer">
-          ⚠️ Los precios son de referencia y están sujetos a cambios sin previo aviso. El valor final se confirma por WhatsApp.
+          Los precios son de referencia y están sujetos a cambios sin previo aviso. El valor final se confirma por WhatsApp.
         </p>
       </header>
 
@@ -222,7 +222,7 @@ function handleSubmit(e) {
 
   fb.className = 'cart__feedback is-ok';
   fb.innerHTML =
-    '✅ Abrimos WhatsApp con tu cotización. Solo pulsa <strong>enviar</strong> para que nos llegue. ' +
+    'Abrimos WhatsApp con tu cotización. Solo pulsa <strong>enviar</strong> para que nos llegue. ' +
     `Si no se abrió, <a href="${url}" target="_blank" rel="noopener">toca aquí</a>.`;
   cart.clear();
   form.reset();

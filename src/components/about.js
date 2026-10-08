@@ -23,7 +23,7 @@ export function About() {
         </p>
       </header>
       <div class="about__photo">
-        <img src="/img/local-2.jpg" alt="Interior de Ferresur La 48: pinturas, herramientas y materiales" loading="lazy" />
+        <img src="/img/local-2.webp" alt="Interior de Ferresur La 48: pinturas, herramientas y materiales" loading="lazy" width="1600" height="1200" />
       </div>
       <div class="values">${cards}</div>
     </div>

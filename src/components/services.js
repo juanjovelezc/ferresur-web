@@ -1,11 +1,12 @@
 import { SERVICIOS } from '../data/content.js';
 import { esc } from '../utils/format.js';
+import { icon } from '../utils/icons.js';
 
 export function Services() {
   const cards = SERVICIOS.map(
     (s) => `
     <article class="service">
-      <div class="service__icon" aria-hidden="true">${s.icono}</div>
+      <div class="service__icon" aria-hidden="true">${icon(s.icono)}</div>
       <h3>${esc(s.titulo)}</h3>
       <p>${esc(s.texto)}</p>
     </article>`

@@ -1,4 +1,5 @@
 import { BUSINESS } from '../config.js';
+import { icon } from '../utils/icons.js';
 
 export function Location() {
   return `
@@ -21,21 +22,21 @@ export function Location() {
         </div>
         <aside class="location__info">
           <div class="info-row">
-            <span class="info-row__ic">📍</span>
+            <span class="info-row__ic">${icon('map-pin')}</span>
             <div>
               <strong>Dirección</strong>
               <p>${BUSINESS.direccion}</p>
             </div>
           </div>
           <div class="info-row">
-            <span class="info-row__ic">📞</span>
+            <span class="info-row__ic">${icon('phone')}</span>
             <div>
               <strong>Teléfono / WhatsApp</strong>
               <p>${BUSINESS.telefono}</p>
             </div>
           </div>
           <div class="info-row">
-            <span class="info-row__ic">📷</span>
+            <span class="info-row__ic">${icon('camera')}</span>
             <div>
               <strong>Instagram</strong>
               <p><a href="${BUSINESS.instagramUrl}" target="_blank" rel="noopener">@${BUSINESS.instagram}</a></p>
